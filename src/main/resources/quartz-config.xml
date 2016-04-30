@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+	<bean id="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="doTime" />
+				<ref bean="ssqTime" />
+				<ref bean="cqsscTime" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 重庆时时彩 开始 -->
+	<bean id="cqsscTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject">
+					<bean class="com.cp.quartz.QuartzJob">
+						<property name="code" value="cqssc" />
+					</bean>
+				</property>
+				<property name="targetMethod"><value>work</value></property>
+			</bean>
+		</property>
+		<property name="cronExpression">
+			<value>0 0/1 * * * ?</value>
+		</property>
+	</bean>
+	<!-- 重庆时时彩 结束 -->
+	<!-- 双色球 开始 -->
+	<bean id="ssqTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject">
+					<bean class="com.cp.quartz.QuartzJob">
+						<property name="code" value="ssq" />
+					</bean>
+				</property>
+				<property name="targetMethod"><value>work</value></property>
+			</bean>
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0/1 * * ?</value>
+		</property>
+	</bean>
+	<!-- 双色球 结束 -->
+
+	<!-- 广东快乐十分 开始 -->
+	<bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject">
+					<bean class="com.cp.quartz.QuartzJob">
+						<property name="code" value="gdklsf" />
+					</bean>
+				</property>
+				<property name="targetMethod">
+					<value>work</value>
+				</property>
+			</bean>
+		</property>
+		<property name="cronExpression">
+			<value>0 0/3 * * * ?</value>
+		</property>
+	</bean>
+	<!-- 广东快乐十分 end -->
+
+</beans>
